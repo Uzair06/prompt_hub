@@ -17,7 +17,7 @@ export default function HomePage() {
             </div>
             
             <h1 className="text-5xl font-bold text-gray-900">
-              Prompt Manager
+              PromptHub
             </h1>
             
             <p className="text-xl text-gray-600 max-w-md mx-auto">

@@ -15,7 +15,7 @@ export default function Header() {
           <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
             <span className="text-white font-bold text-lg">P</span>
           </div>
-          <span className="font-semibold text-xl">Prompt Manager</span>
+          <span className="font-semibold text-xl">PromptHub</span>
         </Link>
 
         <div className="flex items-center gap-4">

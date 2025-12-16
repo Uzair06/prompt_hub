@@ -6,7 +6,7 @@ import { Inter } from 'next/font/google'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Prompt Manager',
+  title: 'PromptHub',
   description: 'Manage your AI prompts efficiently',
 }
 
