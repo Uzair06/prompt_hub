@@ -23,5 +23,14 @@
         "sourceHandlePosition": "right"
       }
     }
+  },
+  {
+    "id": "prompt-management",
+    "config": {
+      "steps/prompts/list-prompts.step.ts": {
+        "x": 0,
+        "y": 0
+      }
+    }
   }
 ]
