@@ -28,8 +28,12 @@
     "id": "prompt-management",
     "config": {
       "steps/prompts/list-prompts.step.ts": {
-        "x": 0,
-        "y": 0
+        "x": -397,
+        "y": 53
+      },
+      "steps/prompts/create-prompt.step.ts": {
+        "x": -83,
+        "y": 57
       }
     }
   }

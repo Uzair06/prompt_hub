@@ -12,7 +12,8 @@ declare module 'motia' {
   }
 
   interface Handlers {
-    
+    'ListPrompts': ApiRouteHandler<Record<string, unknown>, unknown, never>
+    'CreatePrompt': ApiRouteHandler<{ prompt: string }, ApiResponse<201, { id: number; prompt: string | unknown }> | ApiResponse<400, { error: string }> | ApiResponse<500, { error: string }>, never>
   }
     
 }

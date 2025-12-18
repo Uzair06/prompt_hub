@@ -1,6 +1,7 @@
 import { ApiRouteConfig, Handlers } from "motia";
 import { db } from "../../config/db";
 import { users } from "../../config/schema";
+import { prompts } from "../../config/schema";
 
 export const config: ApiRouteConfig = {
   type: "api",
@@ -14,7 +15,7 @@ export const config: ApiRouteConfig = {
 export const handler: Handlers["ListPrompts"] = async (req, { logger }) => {
   const userId = req.pathParams.id;
 
-  const allUsers = await db.select().from(users);
+  const allUsers = await db.select().from(prompts);
 
   console.log(allUsers)
 
