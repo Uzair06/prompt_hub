@@ -27,13 +27,17 @@
   {
     "id": "prompt-management",
     "config": {
-      "steps/prompts/list-prompts.step.ts": {
-        "x": -397,
-        "y": 53
+      "steps/prompts/update-prompts.step.ts": {
+        "x": 18,
+        "y": -138
+      },
+      "steps/prompts/get-prompts.step.ts": {
+        "x": -276,
+        "y": -355
       },
       "steps/prompts/create-prompt.step.ts": {
-        "x": -83,
-        "y": 57
+        "x": -285,
+        "y": 24
       }
     }
   }
