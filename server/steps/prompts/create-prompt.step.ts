@@ -4,12 +4,16 @@ import { db } from "../../config/db";
 import { prompts } from "../../config/schema";
 
 const bodySchema = z.object({
-  prompt: z.string().min(1, "Prompt cannot be empty"),
+  content: z.string().min(1, "Content cannot be empty"),
+  userId: z.string().uuid("UserId must be a valid UUID"),
 });
 
 const responseSchema201 = z.object({
-  id: z.number(),
-  prompt: z.string().nullable(),
+  id: z.string().uuid(),
+  userId: z.string().uuid(),
+  content: z.string(),
+  createdAt: z.date(),
+  updatedAt: z.date(),
 });
 
 const responseSchema400 = z.object({
@@ -37,11 +41,14 @@ export const config: ApiRouteConfig = {
 
 export const handler: Handlers["CreatePrompt"] = async (req, { logger }) => {
   try {
-    const { prompt } = bodySchema.parse(req.body);
+    const { content, userId } = bodySchema.parse(req.body);
 
     const [created] = await db
       .insert(prompts)
-      .values({ prompt })
+      .values({ 
+        content,
+        userId,
+      })
       .returning();
 
     logger.info("Prompt created", { id: created.id });
@@ -50,7 +57,10 @@ export const handler: Handlers["CreatePrompt"] = async (req, { logger }) => {
       status: 201,
       body: {
         id: created.id,
-        prompt: created.prompt,
+        userId: created.userId,
+        content: created.content,
+        createdAt: created.createdAt,
+        updatedAt: created.updatedAt,
       },
     };
   } catch (error: any) {
@@ -58,11 +68,12 @@ export const handler: Handlers["CreatePrompt"] = async (req, { logger }) => {
       error: error?.message ?? String(error),
     });
 
-    if (error?.name === "ZodError") {
+    if (error instanceof z.ZodError) {
+      const errorMessages = error.issues.map((e) => `${e.path.join(".")}: ${e.message}`);
       return {
         status: 400,
         body: {
-          error: "Invalid request body",
+          error: `Validation error: ${errorMessages.join(", ")}`,
         },
       };
     }
