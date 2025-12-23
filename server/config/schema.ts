@@ -10,7 +10,6 @@ export const users = pgTable("users", {
 
 export const prompts = pgTable("prompts", {
   id: uuid("id").defaultRandom().primaryKey(),
-
   userId: text("user_id")
     .notNull()
     .references(() => users.id, {

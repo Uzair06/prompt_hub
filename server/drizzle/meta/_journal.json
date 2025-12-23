@@ -8,6 +8,13 @@
       "when": 1766080409340,
       "tag": "0000_fresh_mastermind",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1766399113476,
+      "tag": "0001_absent_rictor",
+      "breakpoints": true
     }
   ]
 }

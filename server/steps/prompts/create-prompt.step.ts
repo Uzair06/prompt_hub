@@ -1,4 +1,4 @@
-import { ApiRouteConfig, Handlers } from "motia";
+import { ApiRouteConfig, type ApiRouteHandler, type JsonSchema } from "motia";
 import { z } from "zod";
 import { createClerkClient } from "@clerk/backend";
 import { db } from "../../config/db";
@@ -9,13 +9,17 @@ const bodySchema = z.object({
   content: z.string().min(1, "Content cannot be empty"),
 });
 
-const responseSchema201 = z.object({
-  id: z.string().uuid(),
-  userId: z.string(), // Clerk ID (text, not UUID)
-  content: z.string(),
-  createdAt: z.string().datetime(),
-  updatedAt: z.string().datetime(),
-});
+const responseSchema201: JsonSchema = {
+  type: "object",
+  properties: {
+    id: { type: "string", format: "uuid" },
+    userId: { type: "string" }, // Clerk ID (text, not UUID)
+    content: { type: "string" },
+    createdAt: { type: "string", format: "date-time" },
+    updatedAt: { type: "string", format: "date-time" },
+  },
+  required: ["id", "userId", "content", "createdAt", "updatedAt"],
+};
 
 const responseSchema400 = z.object({
   error: z.string(),
@@ -40,7 +44,7 @@ export const config: ApiRouteConfig = {
   },
 };
 
-export const handler: Handlers["CreatePrompt"] = async (req, { logger }) => {
+export const handler: ApiRouteHandler = async (req, { logger }) => {
   try {
     const { content } = bodySchema.parse(req.body);
 
@@ -56,18 +60,18 @@ export const handler: Handlers["CreatePrompt"] = async (req, { logger }) => {
     const token = authHeader.replace("Bearer ", "");
 
     // Verify token and get user from Clerk
-    const clerk = createClerkClient({ 
-      secretKey: process.env.CLERK_SECRET_KEY || "" 
+    const clerk = createClerkClient({
+      secretKey: process.env.CLERK_SECRET_KEY || "",
     });
 
     let clerkId: string;
     try {
       // Use authenticateRequest to verify the token
-      const authResult = await clerk.authenticateRequest({
+      const authResult = (await clerk.authenticateRequest({
         headers: new Headers({
           authorization: authHeader,
         }),
-      } as any);
+      } as any)) as { userId?: string | null };
 
       if (!authResult || !authResult.userId) {
         return {
